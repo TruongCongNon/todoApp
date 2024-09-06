@@ -108,6 +108,7 @@ const App = () => {
       <FilterPanel
         selectedFilterId={selectedFilterId}
         setSelectedFilterId={setSelectedFilterId}
+        todoList={todoList}
       />
       <div className="main-content">
         <input

@@ -24,8 +24,21 @@ const FILTER_ITEMS = [
     }
 ];
 
-const FilterPanel = ({ selectedFilterId, setSelectedFilterId }) => {
-
+const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
+    const coutByFilterType = todoList.reduce((acc, cur) => {
+        let newAcc = { ...acc };
+        if (cur.isCompleted) {
+            newAcc = { ...acc, completed: newAcc.completed + 1 }
+        }
+        if (cur.isImportant) {
+            newAcc = { ...acc, important: newAcc.important + 1 }
+        }
+        if (cur.isDeleted) {
+            newAcc = { ...acc, deleted: newAcc.deleted + 1 }
+        }
+        return newAcc
+    }, { all: todoList.length, important: 0, completed: 0, deleted: 0 })
+    console.log(coutByFilterType)
     return (
         <div className="filter-panel">
             <input type="text" className="search-text" placeholder='Search' />
@@ -52,6 +65,7 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId }) => {
 FilterPanel.propTypes = {
     selectedFilterId: PropTypes.string,
     setSelectedFilterId: PropTypes.func,
-
+    todoList: PropTypes.array,
+    coutByFilterType: PropTypes.string,
 }
 export default FilterPanel;
