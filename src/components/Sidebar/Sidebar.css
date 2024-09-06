@@ -1,0 +1,50 @@
+.sidebar {
+    width: 40vw;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f0f0f0;
+    box-shadow: -2px 0 3px rgb(162, 162, 162);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sb-form {
+    padding: 10px;
+
+}
+
+.sb-form-field {
+    margin-bottom: 10px;
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+}
+
+.sb-footer {
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.sb-footer button {
+    border: 1px solid gray;
+    padding: 3px 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    color: #2b2929;
+    width: 70px;
+    height: 30px;
+}
+
+.sb-footer button:nth-child(1) {
+    background-color: rgb(43, 239, 43);
+}
+
+.sb-footer button:nth-child(2) {
+    background-color: rgb(255, 82, 99);
+}
