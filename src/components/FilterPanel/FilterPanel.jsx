@@ -25,7 +25,7 @@ const FILTER_ITEMS = [
     }
 ];
 
-const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
+const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchText, setSearchText }) => {
     const countByFilterType = useMemo(() => {
         return todoList.reduce((acc, cur) => {
             let newAcc = { ...acc };
@@ -33,17 +33,13 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
             if (cur.isCompleted) {
                 newAcc.completed = newAcc.completed + 1;
             }
-
             if (cur.isImportant) {
                 newAcc.important = newAcc.important + 1;
             }
-
             if (cur.isDeleted) {
                 newAcc.deleted = newAcc.deleted + 1;
             }
-
             newAcc.all = todoList.length;
-
             return newAcc;
         }, { all: 0, important: 0, completed: 0, deleted: 0 });
     }, [todoList]);
@@ -51,7 +47,9 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
 
     return (
         <div className="filter-panel">
-            <input type="text" className="search-text" placeholder='Search' />
+            <input type="text" className="search-text" placeholder='Search' value={searchText} onChange={(e) => {
+                setSearchText(e.target.value);
+            }} />
             <div className='filter-container'>
                 {FILTER_ITEMS.map((item) => {
                     return (
@@ -76,5 +74,7 @@ FilterPanel.propTypes = {
     selectedFilterId: PropTypes.string,
     setSelectedFilterId: PropTypes.func,
     todoList: PropTypes.array,
+    searchText: PropTypes.string,
+    setSearchText: PropTypes.func,
 }
 export default FilterPanel;

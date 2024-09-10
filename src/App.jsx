@@ -9,6 +9,7 @@ const App = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [activeTodoItemId, setActiveTodoItemId] = useState();
   const [selectedFilterId, setSelectedFilterId] = useState("all");
+  const [searchText, setSearchText] = useState("");
   const [todoList, setTodoList] = useState([
     {
       id: '1',
@@ -76,7 +77,11 @@ const App = () => {
 
   const filterTodo = useMemo(() => {
     return todoList.filter(
+
       todo => {
+        if (!todo.name.includes(searchText)) {
+          return false;
+        }
         switch (selectedFilterId) {
           case "all":
             return true;
@@ -91,7 +96,7 @@ const App = () => {
         }
       }
     )
-  }, [selectedFilterId, todoList])
+  }, [selectedFilterId, todoList, searchText])
 
   return (
     <div className="container">
@@ -99,6 +104,8 @@ const App = () => {
         selectedFilterId={selectedFilterId}
         setSelectedFilterId={setSelectedFilterId}
         todoList={todoList}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <div className="main-content">
         <input
