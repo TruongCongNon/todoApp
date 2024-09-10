@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import "./App.css";
 import TodoItems from "./components/TodoItems";
 import Slidebar from "./components/Sidebar/Sidebar";
@@ -74,34 +74,24 @@ const App = () => {
 
   // console.log({ todoList })
 
-  const filterTodo = todoList.filter(
-    todo => {
-      switch (selectedFilterId) {
-        case "all":
-          return true;
-        case "completed":
-          return todo.isCompleted;
-        case "important":
-          return todo.isImportant;
-        case "deleted":
-          return todo.isDeleted;
-        default:
-          return true;
+  const filterTodo = useMemo(() => {
+    return todoList.filter(
+      todo => {
+        switch (selectedFilterId) {
+          case "all":
+            return true;
+          case "completed":
+            return todo.isCompleted;
+          case "important":
+            return todo.isImportant;
+          case "deleted":
+            return todo.isDeleted;
+          default:
+            return true;
+        }
       }
-    }
-  ).map((todo) => {
-    return (
-      <TodoItems
-        id={todo.id}
-        key={todo.id}
-        name={todo.name}
-        isImportant={todo.isImportant}
-        isCompleted={todo.isCompleted}
-        handleCompletedCheckboxChange={handleCompletedCheckboxChange}
-        handleTodoItemClick={handleTodoItemClick}
-      />
-    );
-  });
+    )
+  }, [selectedFilterId, todoList])
 
   return (
     <div className="container">
@@ -135,7 +125,19 @@ const App = () => {
           }}
         />
 
-        <div>{filterTodo}</div>
+        <div>{filterTodo.map((todo) => {
+          return (
+            <TodoItems
+              id={todo.id}
+              key={todo.id}
+              name={todo.name}
+              isImportant={todo.isImportant}
+              isCompleted={todo.isCompleted}
+              handleCompletedCheckboxChange={handleCompletedCheckboxChange}
+              handleTodoItemClick={handleTodoItemClick}
+            />
+          );
+        })}</div>
         {showSidebar && (
           <Slidebar
             key={activeTodoItemId}

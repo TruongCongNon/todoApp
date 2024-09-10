@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import "./FilterPanel.css";
 import PropTypes from 'prop-types'
 
@@ -25,20 +26,29 @@ const FILTER_ITEMS = [
 ];
 
 const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
-    const coutByFilterType = todoList.reduce((acc, cur) => {
-        let newAcc = { ...acc };
-        if (cur.isCompleted) {
-            newAcc = { ...acc, completed: newAcc.completed + 1 }
-        }
-        if (cur.isImportant) {
-            newAcc = { ...acc, important: newAcc.important + 1 }
-        }
-        if (cur.isDeleted) {
-            newAcc = { ...acc, deleted: newAcc.deleted + 1 }
-        }
-        return newAcc
-    }, { all: todoList.length, important: 0, completed: 0, deleted: 0 })
-    console.log(coutByFilterType)
+    const countByFilterType = useMemo(() => {
+        return todoList.reduce((acc, cur) => {
+            let newAcc = { ...acc };
+
+            if (cur.isCompleted) {
+                newAcc.completed = newAcc.completed + 1;
+            }
+
+            if (cur.isImportant) {
+                newAcc.important = newAcc.important + 1;
+            }
+
+            if (cur.isDeleted) {
+                newAcc.deleted = newAcc.deleted + 1;
+            }
+
+            newAcc.all = todoList.length;
+
+            return newAcc;
+        }, { all: 0, important: 0, completed: 0, deleted: 0 });
+    }, [todoList]);
+    console.log(countByFilterType)
+
     return (
         <div className="filter-panel">
             <input type="text" className="search-text" placeholder='Search' />
@@ -54,7 +64,7 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList }) => {
                                 <img src={item.iconPath} alt={item.label} />
                                 <p>{item.label}</p>
                             </div>
-                            <p>22</p>
+                            <p>{countByFilterType[item.id]}</p>
                         </div>
                     );
                 })}
@@ -66,6 +76,5 @@ FilterPanel.propTypes = {
     selectedFilterId: PropTypes.string,
     setSelectedFilterId: PropTypes.func,
     todoList: PropTypes.array,
-    coutByFilterType: PropTypes.string,
 }
 export default FilterPanel;
