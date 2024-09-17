@@ -1,12 +1,12 @@
-import { useContext, useMemo } from "react";
+import PropTypes from 'prop-types';
+import { useMemo } from "react";
 import "../../constants/constant.js";
 import { CATEGORY_ITEMS } from "../../constants/constant.js";
-import { AppContext } from "../../context/AppProvider.jsx";
+import { useAppContext } from "../FilterPanel/FilterPanel.jsx";
 import "./CategoryList.css";
-import PropTypes from 'prop-types'
 
-const CategoryList = ({ todoList }) => {
-  const { selectedCategoryId, setSelectedCategoryId } = useContext(AppContext);
+const CategoryList = () => {
+  const { selectedCategoryId, setSelectedCategoryId, todoList } = useAppContext()
 
   const countByCategory = useMemo(() => {
     return todoList.reduce((acc, cur) => {
