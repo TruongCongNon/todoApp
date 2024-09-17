@@ -1,0 +1,10 @@
+.categories-items {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categories-items.selected {
+    color: white;
+    background-color: #0F548C;
+}

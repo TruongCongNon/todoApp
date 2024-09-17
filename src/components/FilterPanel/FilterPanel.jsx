@@ -1,29 +1,8 @@
 import { useMemo } from "react";
 import "./FilterPanel.css";
 import PropTypes from 'prop-types'
-
-const FILTER_ITEMS = [
-    {
-        id: 'all',
-        label: "All",
-        iconPath: "./public/assets/inbox.png"
-    },
-    {
-        id: 'important',
-        label: "Important",
-        iconPath: "./public/assets/flag.png"
-    },
-    {
-        id: 'completed',
-        label: "Completed",
-        iconPath: "./public/assets/check.png"
-    },
-    {
-        id: 'deleted',
-        label: "Delete",
-        iconPath: "./public/assets/delete.png"
-    }
-];
+import CategoryList from "../Category/CategoryList";
+import FilterList from "../../FilterList/FilterList";
 
 const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchText, setSearchText }) => {
     const countByFilterType = useMemo(() => {
@@ -50,23 +29,12 @@ const FilterPanel = ({ selectedFilterId, setSelectedFilterId, todoList, searchTe
             <input type="text" className="search-text" placeholder='Search' value={searchText} onChange={(e) => {
                 setSearchText(e.target.value);
             }} />
-            <div className='filter-container'>
-                {FILTER_ITEMS.map((item) => {
-                    return (
-                        <div
-                            className={`filter-item ${selectedFilterId === item.id ? 'selected' : ''}`}
-                            key={item.id}
-                            onClick={() => { setSelectedFilterId(item.id) }}
-                        >
-                            <div className='filter-name'>
-                                <img src={item.iconPath} alt={item.label} />
-                                <p>{item.label}</p>
-                            </div>
-                            <p>{countByFilterType[item.id]}</p>
-                        </div>
-                    );
-                })}
-            </div>
+            <FilterList
+                selectedFilterId={selectedFilterId}
+                setSelectedFilterId={setSelectedFilterId}
+                countByFilterType={countByFilterType}
+            />
+            <CategoryList todoList={todoList} />
         </div>
     );
 }

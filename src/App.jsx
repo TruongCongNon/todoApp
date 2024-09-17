@@ -1,8 +1,9 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import "./App.css";
 import TodoItems from "./components/TodoItems";
 import Slidebar from "./components/Sidebar/Sidebar";
 import FilterPanel from "./components/FilterPanel/FilterPanel";
+import { AppContext } from "./context/AppProvider";
 
 const App = () => {
   const inputRef = useRef();
@@ -10,13 +11,15 @@ const App = () => {
   const [activeTodoItemId, setActiveTodoItemId] = useState();
   const [selectedFilterId, setSelectedFilterId] = useState("all");
   const [searchText, setSearchText] = useState("");
+  const { selectedCategoryId } = useContext(AppContext)
   const [todoList, setTodoList] = useState([
     {
       id: '1',
       name: "Đi học bài",
       isImportant: true,
       isCompleted: true,
-      isDeleted: false
+      isDeleted: false,
+      category: 'company'
     },
 
     {
@@ -24,21 +27,24 @@ const App = () => {
       name: "Đi tập thể dục",
       isImportant: true,
       isCompleted: false,
-      isDeleted: false
+      isDeleted: false,
+      category: 'travel'
     },
     {
       id: '3',
       name: "Đi chơi với người yêu ",
       isImportant: false,
       isCompleted: true,
-      isDeleted: false
+      isDeleted: false,
+      category: 'personal'
     },
     {
       id: ' 4',
       name: "Đi xem phim  ",
       isImportant: false,
       isCompleted: true,
-      isDeleted: false
+      isDeleted: false,
+      category: 'idea'
     },
   ]);
 
@@ -82,6 +88,9 @@ const App = () => {
         if (!todo.name.includes(searchText)) {
           return false;
         }
+        if (selectedCategoryId && todo.category !== selectedCategoryId) {
+          return false
+        }
         switch (selectedFilterId) {
           case "all":
             return true;
@@ -96,7 +105,7 @@ const App = () => {
         }
       }
     )
-  }, [selectedFilterId, todoList, searchText])
+  }, [selectedFilterId, todoList, searchText, selectedCategoryId])
 
   return (
     <div className="container">
@@ -124,7 +133,8 @@ const App = () => {
                   name: value,
                   isCompleted: false,
                   isImportant: false,
-                  isDeleted: false
+                  isDeleted: false,
+                  category: 'personal'
                 },
               ]);
               inputRef.current.value = "";

@@ -1,14 +1,16 @@
 import { useState } from "react";
 import "./Sidebar.css";
 import PropTypes from 'prop-types';
+import { CATEGORY_ITEMS } from "../../constants/constant";
 const Sidebar = (props) => {
     const data = props.todoItem;
     const [name, setName] = useState(data.name);
     const [isImportant, setIsImportant] = useState(data.isImportant);
     const [isCompleted, setIsCompleted] = useState(data.isCompleted);
+    const [category, setCategory] = useState(data.category);
 
     const handleSave = () => {
-        const newTodo = { ...data, name, isImportant, isCompleted };
+        const newTodo = { ...data, name, isImportant, isCompleted,category };
         props.handleTodoItemChange(newTodo);
         props.setShowSidebar(false);
     }
@@ -53,6 +55,18 @@ const Sidebar = (props) => {
                         }}
                     />
                 </div>
+                <div className="sb-category">
+                    <label htmlFor="sb-completed">Category</label>
+                    <select name="sb-completed" id="" value={category} onChange={(e) => {
+                        setCategory(e.target.value);
+                    }}>
+                        {
+                            CATEGORY_ITEMS.map(item => (
+                                <option key={item.id} value={item.id}> {item.label} </option>
+                            ))
+                        }
+                    </select>
+                </div>
             </form>
             <div className="sb-footer">
                 <button onClick={handleSave}>Save</button>
@@ -67,6 +81,7 @@ Sidebar.propTypes = {
         name: PropTypes.string.isRequired,
         isCompleted: PropTypes.bool.isRequired,
         isImportant: PropTypes.bool.isRequired,
+        category: PropTypes.string.isRequired,
     }).isRequired,
     handleTodoItemChange: PropTypes.func.isRequired,
 };
